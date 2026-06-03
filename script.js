@@ -59,54 +59,25 @@ const MAZO = [
 // Configuración
 const TOTAL_CARTAS = 54;
 
-// Reproduce el audio de la carta. Si falla (archivo inexistente,
-// permisos, etc.), suena un tono corto generado con Web Audio API.
-let audioCtx = null;
-let audioActual = null;
-
-function reproducirTonoDefault() {
-    try {
-        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        const ahora = audioCtx.currentTime;
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-        osc.type = "triangle";
-        osc.frequency.setValueAtTime(880, ahora);
-        osc.frequency.exponentialRampToValueAtTime(440, ahora + 0.25);
-        gain.gain.setValueAtTime(0.0001, ahora);
-        gain.gain.exponentialRampToValueAtTime(0.35, ahora + 0.02);
-        gain.gain.exponentialRampToValueAtTime(0.0001, ahora + 0.4);
-        osc.connect(gain).connect(audioCtx.destination);
-        osc.start(ahora);
-        osc.stop(ahora + 0.45);
-    } catch (e) {
-        console.warn("No se pudo reproducir el tono por defecto:", e);
-    }
-}
-
+// Anuncia el nombre de la carta usando la síntesis de voz del navegador.
 function reproducirSonido(carta) {
     if (!settings.sonidoActivado) return;
-
-    if (audioActual) {
-        audioActual.pause();
-        audioActual = null;
-    }
-
-    if (!carta || !carta.audio) {
-        reproducirTonoDefault();
+    if (!carta || !carta.nombre) return;
+    if (!("speechSynthesis" in window)) {
+        console.warn("speechSynthesis no está disponible en este navegador.");
         return;
     }
 
     try {
-        const audio = new Audio(carta.audio);
-        audioActual = audio;
-        audio.addEventListener("error", () => reproducirTonoDefault(), { once: true });
-        const promesa = audio.play();
-        if (promesa && typeof promesa.catch === "function") {
-            promesa.catch(() => reproducirTonoDefault());
-        }
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(carta.nombre);
+        utterance.lang = "es-MX";
+        utterance.rate = 0.95;
+        utterance.pitch = 1;
+        utterance.volume = 1;
+        window.speechSynthesis.speak(utterance);
     } catch (e) {
-        reproducirTonoDefault();
+        console.warn("No se pudo reproducir la voz:", e);
     }
 }
 
