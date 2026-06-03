@@ -3,39 +3,48 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Lotería - Repartidor de Cartas</title>
+    <title>Doña Bau · Lotería</title>
+    <link rel="icon" type="image/png" href="logo/logo.png" />
+    <link rel="apple-touch-icon" href="logo/logo.png" />
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     fontFamily: {
-                        display: ['Cinzel', 'serif'],
-                        sans: ['Inter', 'system-ui', 'sans-serif']
+                        display: ['Pacifico', 'cursive'],
+                        sans: ['Fredoka', 'system-ui', 'sans-serif']
                     },
                     colors: {
-                        loteria: {
-                            bg: '#1a0f2e',
-                            panel: '#2a1f3d',
-                            gold: '#f4c542',
-                            goldDark: '#c89a2b',
-                            wine: '#7a1f3d',
-                            cream: '#fdf6e3',
-                            wood: '#8b4513'
+                        bau: {
+                            cream: '#fbeede',
+                            creamDark: '#f3dcc1',
+                            pink: '#e88bb6',
+                            pinkDark: '#d96aa1',
+                            pinkSoft: '#f7c8db',
+                            rose: '#c2477f',
+                            brown: '#6b3a2a',
+                            white: '#fffaf2'
                         }
                     },
                     boxShadow: {
-                        card: '0 25px 50px -12px rgba(0,0,0,0.7), 0 0 0 3px rgba(244,197,66,0.4)'
+                        card: '0 25px 50px -12px rgba(194, 71, 127, 0.35), 0 0 0 4px rgba(255,255,255,0.6)',
+                        soft: '0 10px 25px -10px rgba(194, 71, 127, 0.25)'
                     },
                     keyframes: {
                         flipIn: {
                             '0%': { transform: 'rotateY(90deg) scale(0.8)', opacity: '0' },
                             '100%': { transform: 'rotateY(0deg) scale(1)', opacity: '1' }
+                        },
+                        floaty: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-6px)' }
                         }
                     },
                     animation: {
-                        flipIn: 'flipIn 0.5s ease-out'
+                        flipIn: 'flipIn 0.5s ease-out',
+                        floaty: 'floaty 3s ease-in-out infinite'
                     }
                 }
             }
@@ -44,19 +53,27 @@
     <style>
         body {
             background:
-                radial-gradient(circle at 20% 20%, rgba(122, 31, 61, 0.4), transparent 50%),
-                radial-gradient(circle at 80% 80%, rgba(244, 197, 66, 0.15), transparent 50%),
-                linear-gradient(135deg, #1a0f2e 0%, #0a0515 100%);
+                radial-gradient(circle at 15% 10%, rgba(247, 200, 219, 0.6), transparent 45%),
+                radial-gradient(circle at 85% 90%, rgba(232, 139, 182, 0.35), transparent 45%),
+                linear-gradient(135deg, #fbeede 0%, #f7d9e6 100%);
             min-height: 100vh;
         }
+        /* Papel picado decorativo en el borde superior */
+        .papel-picado {
+            background:
+                radial-gradient(circle at 10px 0, transparent 8px, #e88bb6 9px) repeat-x;
+            background-size: 24px 14px;
+            height: 14px;
+        }
         .card-back-pattern {
-            background-image:
-                repeating-linear-gradient(45deg, #f4c542 0, #f4c542 14px, #c89a2b 14px, #c89a2b 28px);
+            background:
+                radial-gradient(circle at 20% 20%, rgba(255,255,255,0.5), transparent 35%),
+                repeating-linear-gradient(45deg, #f7c8db 0, #f7c8db 14px, #e88bb6 14px, #e88bb6 28px);
         }
-        .text-shadow-gold {
-            text-shadow: 2px 2px 0 rgba(0,0,0,0.5), 0 0 20px rgba(244,197,66,0.4);
+        .text-shadow-soft {
+            text-shadow: 2px 3px 0 rgba(255, 255, 255, 0.5);
         }
-        /* Carta responsiva: usa ancho disponible manteniendo proporción 17:24 */
+        /* Carta responsiva con proporción real del naipe */
         .card-responsive {
             width: min(340px, calc(100vw - 2rem));
             aspect-ratio: 17 / 24;
@@ -70,99 +87,106 @@
         }
     </style>
 </head>
-<body class="font-sans text-loteria-cream">
+<body class="font-sans text-bau-brown">
+    <div class="papel-picado"></div>
+
     <div class="container mx-auto px-3 sm:px-4 py-4 sm:py-8 max-w-5xl">
         <header class="text-center mb-5 sm:mb-8">
-            <h1 class="font-display font-black text-4xl sm:text-5xl md:text-6xl text-loteria-gold tracking-[0.15em] sm:tracking-[0.2em] text-shadow-gold">
-                LOTERÍA
-            </h1>
-            <p class="text-loteria-gold/70 italic mt-1 sm:mt-2 tracking-wide text-sm sm:text-base">Repartidor automático de cartas</p>
-            <div class="mt-2 sm:mt-3 h-1 w-24 sm:w-32 mx-auto bg-gradient-to-r from-transparent via-loteria-gold to-transparent"></div>
+            <img src="logo/logo.png" alt="Doña Bau"
+                class="mx-auto w-48 sm:w-64 md:w-72 drop-shadow-lg animate-floaty" />
+            <p class="text-bau-rose font-medium italic mt-1 sm:mt-2 tracking-wide text-sm sm:text-base">
+                ¡La Lotería de Doña Bau!
+            </p>
+            <div class="mt-2 sm:mt-3 h-1 w-24 sm:w-32 mx-auto bg-gradient-to-r from-transparent via-bau-pink to-transparent rounded-full"></div>
         </header>
 
         <main class="flex flex-col gap-4 sm:gap-6">
             <section class="grid grid-cols-2 sm:flex sm:flex-wrap sm:justify-center gap-2 sm:gap-3">
                 <button id="shuffleBtn"
-                    class="px-3 sm:px-6 py-3 rounded-lg font-semibold tracking-wide text-sm sm:text-base bg-loteria-gold text-loteria-bg shadow-lg shadow-loteria-gold/30 hover:bg-yellow-300 hover:-translate-y-0.5 active:translate-y-0 transition disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:translate-y-0">
+                    class="px-3 sm:px-6 py-3 rounded-full font-semibold tracking-wide text-sm sm:text-base bg-bau-pink text-white shadow-soft hover:bg-bau-pinkDark hover:-translate-y-0.5 active:translate-y-0 transition disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:translate-y-0">
                     🎴 Barajear
                 </button>
                 <button id="startBtn" disabled
-                    class="px-3 sm:px-6 py-3 rounded-lg font-semibold tracking-wide text-sm sm:text-base bg-green-600 text-white shadow-lg shadow-green-600/30 hover:bg-green-500 hover:-translate-y-0.5 active:translate-y-0 transition disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:translate-y-0">
+                    class="px-3 sm:px-6 py-3 rounded-full font-semibold tracking-wide text-sm sm:text-base bg-bau-rose text-white shadow-soft hover:bg-pink-700 hover:-translate-y-0.5 active:translate-y-0 transition disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:translate-y-0">
                     ▶ Comenzar
                 </button>
                 <button id="pauseBtn" disabled
-                    class="px-3 sm:px-6 py-3 rounded-lg font-semibold tracking-wide text-sm sm:text-base bg-amber-600 text-white shadow-lg shadow-amber-600/30 hover:bg-amber-500 hover:-translate-y-0.5 active:translate-y-0 transition disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:translate-y-0">
+                    class="px-3 sm:px-6 py-3 rounded-full font-semibold tracking-wide text-sm sm:text-base bg-bau-creamDark text-bau-brown border-2 border-bau-pink/40 shadow-soft hover:bg-bau-pinkSoft hover:-translate-y-0.5 active:translate-y-0 transition disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:translate-y-0">
                     ⏸ Pausar
                 </button>
                 <button id="resetBtn"
-                    class="px-3 sm:px-6 py-3 rounded-lg font-semibold tracking-wide text-sm sm:text-base bg-loteria-wine text-white shadow-lg shadow-loteria-wine/30 hover:bg-rose-700 hover:-translate-y-0.5 active:translate-y-0 transition">
+                    class="px-3 sm:px-6 py-3 rounded-full font-semibold tracking-wide text-sm sm:text-base bg-bau-brown text-bau-cream shadow-soft hover:bg-amber-900 hover:-translate-y-0.5 active:translate-y-0 transition">
                     ↺ Reiniciar
                 </button>
             </section>
 
-            <section class="flex flex-col sm:flex-row justify-between items-center gap-2 bg-loteria-panel/70 backdrop-blur border-l-4 border-loteria-gold rounded-lg px-4 sm:px-5 py-3 shadow-lg">
-                <span id="status" class="text-loteria-cream/90 text-sm sm:text-base text-center sm:text-left">Presiona "Barajear" para empezar.</span>
-                <span id="counter" class="font-display font-bold text-loteria-gold text-lg sm:text-xl">0 / 54</span>
+            <section class="flex flex-col sm:flex-row justify-between items-center gap-2 bg-bau-white/80 backdrop-blur border-l-4 border-bau-pink rounded-2xl px-4 sm:px-5 py-3 shadow-soft">
+                <span id="status" class="text-bau-brown text-sm sm:text-base text-center sm:text-left">
+                    Presiona "Barajear" para empezar.
+                </span>
+                <span id="counter" class="font-display text-bau-rose text-xl sm:text-2xl">0 / 54</span>
             </section>
 
             <section class="flex justify-center items-center [perspective:1200px]">
                 <div id="card"
-                    class="card-back-pattern card-responsive rounded-2xl border-4 sm:border-[6px] border-loteria-wood flex flex-col justify-center items-center p-3 sm:p-4 shadow-card relative overflow-hidden text-center">
-                    <span class="bg-white/90 px-4 sm:px-6 py-2 rounded-lg font-display font-bold text-2xl sm:text-3xl tracking-[0.2em] text-loteria-bg border-2 border-loteria-wood">
-                        LOTERÍA
-                    </span>
+                    class="card-back-pattern card-responsive rounded-3xl flex flex-col justify-center items-center p-4 shadow-card relative overflow-hidden text-center">
+                    <img src="logo/logo.png" alt="Doña Bau"
+                        class="w-3/4 drop-shadow-md" />
                 </div>
             </section>
 
-            <section class="bg-loteria-panel/70 backdrop-blur rounded-lg p-4 sm:p-5 shadow-lg border border-loteria-gold/20">
-                <h2 class="font-display text-loteria-gold text-base sm:text-lg mb-3 tracking-wider flex items-center gap-2">
-                    <span class="h-px flex-1 bg-loteria-gold/30"></span>
-                    CARTAS MOSTRADAS
-                    <span class="h-px flex-1 bg-loteria-gold/30"></span>
+            <section class="bg-bau-white/80 backdrop-blur rounded-2xl p-4 sm:p-5 shadow-soft border border-bau-pink/20">
+                <h2 class="font-display text-bau-rose text-xl sm:text-2xl mb-3 flex items-center gap-3">
+                    <span class="h-px flex-1 bg-bau-pink/30"></span>
+                    Cartas mostradas
+                    <span class="h-px flex-1 bg-bau-pink/30"></span>
                 </h2>
                 <ul id="history" class="flex flex-wrap gap-1.5 sm:gap-2 min-h-[40px]">
-                    <li class="text-loteria-cream/40 italic text-sm">Aún no se han mostrado cartas...</li>
+                    <li class="text-bau-brown/50 italic text-sm">Aún no se han mostrado cartas...</li>
                 </ul>
             </section>
 
-            <section class="bg-loteria-panel/70 backdrop-blur rounded-lg p-4 sm:p-5 shadow-lg border border-loteria-gold/20">
-                <h2 class="font-display text-loteria-gold text-base sm:text-lg mb-4 tracking-wider flex items-center gap-2">
-                    <span class="h-px flex-1 bg-loteria-gold/30"></span>
-                    AJUSTES
-                    <span class="h-px flex-1 bg-loteria-gold/30"></span>
+            <section class="bg-bau-white/80 backdrop-blur rounded-2xl p-4 sm:p-5 shadow-soft border border-bau-pink/20">
+                <h2 class="font-display text-bau-rose text-xl sm:text-2xl mb-4 flex items-center gap-3">
+                    <span class="h-px flex-1 bg-bau-pink/30"></span>
+                    Ajustes
+                    <span class="h-px flex-1 bg-bau-pink/30"></span>
                 </h2>
                 <div class="grid sm:grid-cols-2 gap-5">
                     <div class="flex flex-col gap-2">
-                        <label for="durationInput" class="text-sm text-loteria-cream/80 font-medium flex justify-between">
+                        <label for="durationInput" class="text-sm text-bau-brown font-medium flex justify-between">
                             <span>Tiempo por carta</span>
-                            <span class="text-loteria-gold font-bold"><span id="durationValue">3.0</span> s</span>
+                            <span class="text-bau-rose font-bold"><span id="durationValue">3.0</span> s</span>
                         </label>
                         <input id="durationInput" type="range" min="1" max="10" step="0.5" value="3"
-                            class="w-full accent-loteria-gold cursor-pointer" />
-                        <div class="flex justify-between text-xs text-loteria-cream/40">
+                            class="w-full accent-bau-pink cursor-pointer" />
+                        <div class="flex justify-between text-xs text-bau-brown/50">
                             <span>1s</span><span>10s</span>
                         </div>
                     </div>
                     <div class="flex flex-col gap-2">
-                        <span class="text-sm text-loteria-cream/80 font-medium">Sonido</span>
+                        <span class="text-sm text-bau-brown font-medium">Sonido</span>
                         <label for="soundToggle" class="flex items-center gap-3 cursor-pointer select-none">
                             <span class="relative inline-block w-12 h-6">
                                 <input id="soundToggle" type="checkbox" checked class="peer sr-only" />
-                                <span class="absolute inset-0 bg-gray-600 peer-checked:bg-loteria-gold rounded-full transition"></span>
-                                <span class="absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full transition peer-checked:translate-x-6"></span>
+                                <span class="absolute inset-0 bg-bau-creamDark peer-checked:bg-bau-pink rounded-full transition"></span>
+                                <span class="absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full transition peer-checked:translate-x-6 shadow"></span>
                             </span>
-                            <span id="soundLabel" class="text-loteria-cream">Activado 🔔</span>
+                            <span id="soundLabel" class="text-bau-brown">Activado 🔔</span>
                         </label>
-                        <p class="text-xs text-loteria-cream/40 italic">Suena al revelar cada carta.</p>
+                        <p class="text-xs text-bau-brown/50 italic">Suena al revelar cada carta.</p>
                     </div>
                 </div>
             </section>
         </main>
 
-        <footer class="text-center mt-6 sm:mt-10 text-loteria-cream/40 text-xs sm:text-sm">
+        <footer class="text-center mt-6 sm:mt-10 text-bau-brown/50 text-xs sm:text-sm flex flex-col items-center gap-2">
+            <img src="logo/logo.png" alt="Doña Bau" class="w-16 opacity-70" />
             <p>54 cartas · Ajustes guardados automáticamente</p>
         </footer>
     </div>
+
+    <div class="papel-picado mt-4 rotate-180"></div>
 
     <script src="script.js"></script>
 </body>

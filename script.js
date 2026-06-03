@@ -1,12 +1,70 @@
+// Mazo de Cartas de Lotería
+const MAZO = [
+    { numero: 1, nombre: "DOÑA BAU", imagen: "cartas/donaBau.png", audio: "sonidos/donaBau.mp3" },
+    { numero: 2, nombre: "DON PELOS", imagen: "cartas/donPelos.png", audio: "sonidos/donPelos.mp3" },
+    { numero: 3, nombre: "EL ANILLO", imagen: "cartas/elAnillo.png", audio: "sonidos/elAnillo.mp3" },
+    { numero: 4, nombre: "EL BASTÓN", imagen: "cartas/elBaston.png", audio: "sonidos/elBaston.mp3" },
+    { numero: 5, nombre: "EL BOLSÓN", imagen: "cartas/elBolson.png", audio: "sonidos/elBolson.mp3" },
+    { numero: 6, nombre: "EL CAFECITO", imagen: "cartas/elCafecito.png", audio: "sonidos/elCafecito.mp3" },
+    { numero: 7, nombre: "EL CARRITO", imagen: "cartas/elCarrito.png", audio: "sonidos/elCarrito.mp3" },
+    { numero: 8, nombre: "EL CARTERÓN", imagen: "cartas/elCarteron.png", audio: "sonidos/elCarteron.mp3" },
+    { numero: 9, nombre: "EL CEVICHE", imagen: "cartas/elCeviche.png", audio: "sonidos/elCeviche.mp3" },
+    { numero: 10, nombre: "EL CHALEQUITO", imagen: "cartas/elChalequito.png", audio: "sonidos/elChalequito.mp3" },
+    { numero: 11, nombre: "EL COCO", imagen: "cartas/elCoco.png", audio: "sonidos/elCoco.mp3" },
+    { numero: 12, nombre: "EL COCÓN", imagen: "cartas/elCocon.png", audio: "sonidos/elCocon.mp3" },
+    { numero: 13, nombre: "EL DOMINÓ", imagen: "cartas/elDomino.png", audio: "sonidos/elDomino.mp3" },
+    { numero: 14, nombre: "EL ELOTE", imagen: "cartas/elElote.png", audio: "sonidos/elElote.mp3" },
+    { numero: 15, nombre: "EL ESATLÓN", imagen: "cartas/elEsatlon.png", audio: "sonidos/elEsatlon.mp3" },
+    { numero: 16, nombre: "EL FALDÓN", imagen: "cartas/elFaldon.png", audio: "sonidos/elFaldon.mp3" },
+    { numero: 17, nombre: "EL GALLITO", imagen: "cartas/elGallito.png", audio: "sonidos/elGallito.mp3" },
+    { numero: 18, nombre: "EL LORITO", imagen: "cartas/elLorito.png", audio: "sonidos/elLorito.mp3" },
+    { numero: 19, nombre: "EL MONEDERO", imagen: "cartas/elMonedero.png", audio: "sonidos/elMonedero.mp3" },
+    { numero: 20, nombre: "EL OSSO", imagen: "cartas/elOsso.png", audio: "sonidos/elOsso.mp3" },
+    { numero: 21, nombre: "EL POLLO", imagen: "cartas/elPollo.png", audio: "sonidos/elPollo.mp3" },
+    { numero: 22, nombre: "EL SANDWICHÓN", imagen: "cartas/elSandwichon.png", audio: "sonidos/elSandwichon.mp3" },
+    { numero: 23, nombre: "EL SUÉTER", imagen: "cartas/elSueter.png", audio: "sonidos/elSueter.mp3" },
+    { numero: 24, nombre: "EL TAQUITO", imagen: "cartas/elTaquito.png", audio: "sonidos/elTaquito.mp3" },
+    { numero: 25, nombre: "EL TEQUILA", imagen: "cartas/elTequila.png", audio: "sonidos/elTequila.mp3" },
+    { numero: 26, nombre: "EL TERRENO", imagen: "cartas/elTerreno.png", audio: "sonidos/elTerreno.mp3" },
+    { numero: 27, nombre: "LA 5 DE MAYO", imagen: "cartas/la5DeMayo.png", audio: "sonidos/la5DeMayo.mp3" },
+    { numero: 28, nombre: "LA ALESA", imagen: "cartas/laAlesa.png", audio: "sonidos/laAlesa.mp3" },
+    { numero: 29, nombre: "LA ANDADERA", imagen: "cartas/laAndadera.png", audio: "sonidos/laAndadera.mp3" },
+    { numero: 30, nombre: "LA CANA", imagen: "cartas/laCana.png", audio: "sonidos/laCana.mp3" },
+    { numero: 31, nombre: "LA CHANCLA", imagen: "cartas/laChancla.png", audio: "sonidos/laChancla.mp3" },
+    { numero: 32, nombre: "LA CREMA", imagen: "cartas/laCrema.png", audio: "sonidos/laCrema.mp3" },
+    { numero: 33, nombre: "LA GUAYABA", imagen: "cartas/laGuayaba.png", audio: "sonidos/laGuayaba.mp3" },
+    { numero: 34, nombre: "LA HAMACA", imagen: "cartas/laHamaca.png", audio: "sonidos/laHamaca.mp3" },
+    { numero: 35, nombre: "LA INSULINA", imagen: "cartas/laInsulina.png", audio: "sonidos/laInsulina.mp3" },
+    { numero: 36, nombre: "LA JAMAICA", imagen: "cartas/laJamaica.png", audio: "sonidos/laJamaica.mp3" },
+    { numero: 37, nombre: "LA MECEDORA", imagen: "cartas/laMecedora.png", audio: "sonidos/laMecedora.mp3" },
+    { numero: 38, nombre: "LA MICHE", imagen: "cartas/laMiche.png", audio: "sonidos/laMiche.mp3" },
+    { numero: 39, nombre: "LA NIEVE", imagen: "cartas/laNieve.png", audio: "sonidos/laNieve.mp3" },
+    { numero: 40, nombre: "LA PALETA", imagen: "cartas/laPaleta.png", audio: "sonidos/laPaleta.mp3" },
+    { numero: 41, nombre: "LA PAPA", imagen: "cartas/laPapa.png", audio: "sonidos/laPapa.mp3" },
+    { numero: 42, nombre: "LA PIZZA", imagen: "cartas/laPizza.png", audio: "sonidos/laPizza.mp3" },
+    { numero: 43, nombre: "LA ROCÍO", imagen: "cartas/laRocio.png", audio: "sonidos/laRocio.mp3" },
+    { numero: 44, nombre: "LA RODILLA", imagen: "cartas/laRodilla.png", audio: "sonidos/laRodilla.mp3" },
+    { numero: 45, nombre: "LA ROSITA", imagen: "cartas/laRosita.png", audio: "sonidos/laRosita.mp3" },
+    { numero: 46, nombre: "LAS CALCETAS", imagen: "cartas/lasCalcetas.png", audio: "sonidos/lasCalcetas.mp3" },
+    { numero: 47, nombre: "LAS GALLETAS", imagen: "cartas/lasGalletas.png", audio: "sonidos/lasGalletas.mp3" },
+    { numero: 48, nombre: "LAS MATAS", imagen: "cartas/lasMatas.png", audio: "sonidos/lasMatas.mp3" },
+    { numero: 49, nombre: "LAS TORTILLAS", imagen: "cartas/lasTortillas.png", audio: "sonidos/lasTortillas.mp3" },
+    { numero: 50, nombre: "LOS ARETES", imagen: "cartas/losAretes.png", audio: "sonidos/losAretes.mp3" },
+    { numero: 51, nombre: "LOS CACAHUATES", imagen: "cartas/losCacahuates.png", audio: "sonidos/losCacahuates.mp3" },
+    { numero: 52, nombre: "LOS LENTES", imagen: "cartas/losLentes.png", audio: "sonidos/losLentes.mp3" },
+    { numero: 53, nombre: "LOS NOPALITOS", imagen: "cartas/losNopalitos.png", audio: "sonidos/losNopalitos.mp3" },
+    { numero: 54, nombre: "LOS TOSTILOCOS", imagen: "cartas/losTostilocos.png", audio: "sonidos/losTostilocos.mp3" }
+];
+
 // Configuración
 const TOTAL_CARTAS = 54;
 
-// Audio placeholder: tono corto generado con Web Audio API.
-// Para usar un archivo real, reemplaza `reproducirSonido` por:
-//   const audio = new Audio('sounds/carta.mp3'); audio.play();
+// Reproduce el audio de la carta. Si falla (archivo inexistente,
+// permisos, etc.), suena un tono corto generado con Web Audio API.
 let audioCtx = null;
-function reproducirSonido() {
-    if (!settings.sonidoActivado) return;
+let audioActual = null;
+
+function reproducirTonoDefault() {
     try {
         if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         const ahora = audioCtx.currentTime;
@@ -22,17 +80,35 @@ function reproducirSonido() {
         osc.start(ahora);
         osc.stop(ahora + 0.45);
     } catch (e) {
-        console.warn("No se pudo reproducir el sonido:", e);
+        console.warn("No se pudo reproducir el tono por defecto:", e);
     }
 }
 
-// Mazo placeholder (54 cartas). Sustituye `nombre` e `imagen` cuando
-// tengas las cartas finales.
-const MAZO = Array.from({ length: TOTAL_CARTAS }, (_, i) => ({
-    numero: i + 1,
-    nombre: `Carta ${i + 1}`,
-    imagen: null
-}));
+function reproducirSonido(carta) {
+    if (!settings.sonidoActivado) return;
+
+    if (audioActual) {
+        audioActual.pause();
+        audioActual = null;
+    }
+
+    if (!carta || !carta.audio) {
+        reproducirTonoDefault();
+        return;
+    }
+
+    try {
+        const audio = new Audio(carta.audio);
+        audioActual = audio;
+        audio.addEventListener("error", () => reproducirTonoDefault(), { once: true });
+        const promesa = audio.play();
+        if (promesa && typeof promesa.catch === "function") {
+            promesa.catch(() => reproducirTonoDefault());
+        }
+    } catch (e) {
+        reproducirTonoDefault();
+    }
+}
 
 // Ajustes (con persistencia en LocalStorage)
 const STORAGE_KEY = "loteria.settings.v1";
@@ -96,32 +172,26 @@ function barajear(array) {
     return copia;
 }
 
-const CARD_BASE = "card-responsive rounded-2xl border-4 sm:border-[6px] border-loteria-wood flex flex-col justify-center items-center p-3 sm:p-4 shadow-card relative overflow-hidden text-center";
+const CARD_BASE = "card-responsive rounded-3xl flex flex-col justify-center items-center shadow-card relative overflow-hidden text-center";
 
 function renderDorso() {
-    cardEl.className = `${CARD_BASE} card-back-pattern`;
+    cardEl.className = `${CARD_BASE} card-back-pattern p-4`;
     cardEl.innerHTML = `
-        <span class="bg-white/90 px-4 sm:px-6 py-2 rounded-lg font-display font-bold text-2xl sm:text-3xl tracking-[0.2em] text-loteria-bg border-2 border-loteria-wood">
-            LOTERÍA
-        </span>
+        <img src="logo/logo.png" alt="Doña Bau" class="w-3/4 drop-shadow-md" />
     `;
 }
 
 function renderCarta(carta) {
-    cardEl.className = `${CARD_BASE} bg-loteria-cream animate-flipIn`;
-    const contenidoImagen = carta.imagen
-        ? `<img src="${carta.imagen}" alt="${carta.nombre}" class="w-full h-full object-contain" />`
-        : `<span class="text-5xl sm:text-6xl text-loteria-wood/60">?</span>`;
-
-    cardEl.innerHTML = `
-        <span class="absolute top-2 left-3 sm:top-3 sm:left-4 font-display font-bold text-2xl sm:text-3xl text-loteria-wood">${carta.numero}</span>
-        <span class="absolute top-2 right-3 sm:top-3 sm:right-4 font-display font-bold text-xl sm:text-2xl text-loteria-wood/70">${carta.numero}</span>
-        <div class="w-[75%] h-[60%] rounded-lg border-[3px] border-dashed border-loteria-wood flex items-center justify-center mb-3 sm:mb-4"
-             style="background: linear-gradient(135deg, #e8dcc0 0%, #c9b899 100%);">
-            ${contenidoImagen}
-        </div>
-        <div class="font-display font-bold text-xl sm:text-2xl text-loteria-wood uppercase tracking-wider">${carta.nombre}</div>
-    `;
+    cardEl.className = `${CARD_BASE} bg-bau-white animate-flipIn`;
+    if (carta.imagen) {
+        cardEl.innerHTML = `
+            <img src="${carta.imagen}" alt="${carta.nombre}" class="absolute inset-0 w-full h-full object-cover" />
+        `;
+    } else {
+        cardEl.innerHTML = `
+            <span class="font-display text-3xl text-bau-rose">${carta.nombre}</span>
+        `;
+    }
 }
 
 function actualizarContador() {
@@ -133,13 +203,17 @@ function agregarAlHistorial(carta) {
     if (placeholder) placeholder.remove();
 
     const li = document.createElement("li");
-    li.className = "bg-loteria-gold/15 border border-loteria-goldDark/60 text-loteria-cream px-2.5 py-1 rounded text-sm font-medium";
-    li.textContent = `${carta.numero}. ${carta.nombre}`;
+    li.className = "group relative w-16 sm:w-20 aspect-[17/24] rounded-lg overflow-hidden border-2 border-bau-pink/60 shadow-soft bg-bau-white";
+    li.title = `${carta.numero}. ${carta.nombre}`;
+    li.innerHTML = carta.imagen
+        ? `<img src="${carta.imagen}" alt="${carta.nombre}" class="w-full h-full object-cover" />
+           <span class="absolute top-0 left-0 bg-bau-rose text-white text-[10px] font-bold px-1.5 py-0.5 rounded-br-lg">${carta.numero}</span>`
+        : `<span class="flex items-center justify-center w-full h-full font-display text-bau-rose text-sm">${carta.nombre}</span>`;
     historyEl.insertBefore(li, historyEl.firstChild);
 }
 
 function vaciarHistorial() {
-    historyEl.innerHTML = '<li class="text-loteria-cream/40 italic text-sm">Aún no se han mostrado cartas...</li>';
+    historyEl.innerHTML = '<li class="text-bau-brown/50 italic text-sm">Aún no se han mostrado cartas...</li>';
 }
 
 function mostrarSiguiente() {
@@ -151,7 +225,7 @@ function mostrarSiguiente() {
 
     const carta = mazoBarajeado[indiceActual];
     renderCarta(carta);
-    reproducirSonido();
+    reproducirSonido(carta);
     agregarAlHistorial(carta);
     indiceActual++;
     actualizarContador();
