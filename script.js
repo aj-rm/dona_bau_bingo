@@ -84,6 +84,13 @@ function reproducirTonoDefault() {
     }
 }
 
+function rutaSonidoExtra(audioPath) {
+    if (!audioPath) return null;
+    const punto = audioPath.lastIndexOf(".");
+    if (punto === -1) return audioPath + "_extra";
+    return audioPath.slice(0, punto) + "_extra" + audioPath.slice(punto);
+}
+
 function reproducirSonido(carta) {
     if (!settings.sonidoActivado) return;
 
@@ -97,8 +104,11 @@ function reproducirSonido(carta) {
         return;
     }
 
+    const usarExtra = !!settings.sonidosExtra[carta.numero];
+    const ruta = usarExtra ? rutaSonidoExtra(carta.audio) : carta.audio;
+
     try {
-        const audio = new Audio(carta.audio);
+        const audio = new Audio(ruta);
         audioActual = audio;
         audio.addEventListener("error", () => reproducirTonoDefault(), { once: true });
         const promesa = audio.play();
@@ -143,7 +153,8 @@ function reproducirEfecto(src, fallbackMs) {
 const STORAGE_KEY = "loteria.settings.v1";
 const settings = {
     duracionMs: 3000,
-    sonidoActivado: true
+    sonidoActivado: true,
+    sonidosExtra: {} // { [numeroCarta]: true }
 };
 
 function cargarAjustes() {
@@ -156,6 +167,12 @@ function cargarAjustes() {
         }
         if (typeof guardado.sonidoActivado === "boolean") {
             settings.sonidoActivado = guardado.sonidoActivado;
+        }
+        if (guardado.sonidosExtra && typeof guardado.sonidosExtra === "object") {
+            settings.sonidosExtra = {};
+            for (const k of Object.keys(guardado.sonidosExtra)) {
+                if (guardado.sonidosExtra[k]) settings.sonidosExtra[k] = true;
+            }
         }
     } catch (e) {
         console.warn("No se pudieron cargar los ajustes:", e);
@@ -190,6 +207,9 @@ const durationInput = document.getElementById("durationInput");
 const durationValue = document.getElementById("durationValue");
 const soundToggle = document.getElementById("soundToggle");
 const soundLabel = document.getElementById("soundLabel");
+const extraSoundsList = document.getElementById("extraSoundsList");
+const extraAllBtn = document.getElementById("extraAllBtn");
+const extraNoneBtn = document.getElementById("extraNoneBtn");
 
 // Fisher–Yates
 function barajear(array) {
@@ -360,6 +380,50 @@ soundToggle.addEventListener("change", (e) => {
     guardarAjustes();
 });
 
+function renderListaSonidosExtra() {
+    extraSoundsList.innerHTML = "";
+    for (const carta of MAZO) {
+        const li = document.createElement("li");
+        const id = `extra-${carta.numero}`;
+        const activo = !!settings.sonidosExtra[carta.numero];
+        li.innerHTML = `
+            <label for="${id}" class="flex items-center gap-2 cursor-pointer select-none text-xs sm:text-sm text-bau-brown hover:text-bau-rose transition py-0.5">
+                <input id="${id}" type="checkbox" data-numero="${carta.numero}" ${activo ? "checked" : ""}
+                    class="w-4 h-4 accent-bau-pink cursor-pointer flex-shrink-0" />
+                <span class="font-semibold text-bau-rose/70 w-6 text-right">${carta.numero}.</span>
+                <span class="truncate">${carta.nombre}</span>
+            </label>
+        `;
+        extraSoundsList.appendChild(li);
+    }
+}
+
+extraSoundsList.addEventListener("change", (e) => {
+    const input = e.target;
+    if (!(input instanceof HTMLInputElement) || input.type !== "checkbox") return;
+    const numero = parseInt(input.dataset.numero, 10);
+    if (!numero) return;
+    if (input.checked) {
+        settings.sonidosExtra[numero] = true;
+    } else {
+        delete settings.sonidosExtra[numero];
+    }
+    guardarAjustes();
+});
+
+extraAllBtn.addEventListener("click", () => {
+    settings.sonidosExtra = {};
+    for (const carta of MAZO) settings.sonidosExtra[carta.numero] = true;
+    guardarAjustes();
+    renderListaSonidosExtra();
+});
+
+extraNoneBtn.addEventListener("click", () => {
+    settings.sonidosExtra = {};
+    guardarAjustes();
+    renderListaSonidosExtra();
+});
+
 // Inicialización
 cargarAjustes();
 const segundosIniciales = settings.duracionMs / 1000;
@@ -367,5 +431,6 @@ durationInput.value = segundosIniciales;
 durationValue.textContent = segundosIniciales.toFixed(1);
 soundToggle.checked = settings.sonidoActivado;
 soundLabel.textContent = settings.sonidoActivado ? "Activado \ud83d\udd14" : "Desactivado \ud83d\udd15";
+renderListaSonidosExtra();
 actualizarContador();
 renderDorso();
