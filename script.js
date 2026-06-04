@@ -59,26 +59,84 @@ const MAZO = [
 // Configuración
 const TOTAL_CARTAS = 54;
 
-// Anuncia el nombre de la carta usando la síntesis de voz del navegador.
+// Reproduce el audio de la carta. Si falla (archivo inexistente,
+// permisos, etc.), suena un tono corto generado con Web Audio API.
+let audioCtx = null;
+let audioActual = null;
+
+function reproducirTonoDefault() {
+    try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const ahora = audioCtx.currentTime;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = "triangle";
+        osc.frequency.setValueAtTime(880, ahora);
+        osc.frequency.exponentialRampToValueAtTime(440, ahora + 0.25);
+        gain.gain.setValueAtTime(0.0001, ahora);
+        gain.gain.exponentialRampToValueAtTime(0.35, ahora + 0.02);
+        gain.gain.exponentialRampToValueAtTime(0.0001, ahora + 0.4);
+        osc.connect(gain).connect(audioCtx.destination);
+        osc.start(ahora);
+        osc.stop(ahora + 0.45);
+    } catch (e) {
+        console.warn("No se pudo reproducir el tono por defecto:", e);
+    }
+}
+
 function reproducirSonido(carta) {
     if (!settings.sonidoActivado) return;
-    if (!carta || !carta.nombre) return;
-    if (!("speechSynthesis" in window)) {
-        console.warn("speechSynthesis no está disponible en este navegador.");
+
+    if (audioActual) {
+        audioActual.pause();
+        audioActual = null;
+    }
+
+    if (!carta || !carta.audio) {
+        reproducirTonoDefault();
         return;
     }
 
     try {
-        window.speechSynthesis.cancel();
-        const utterance = new SpeechSynthesisUtterance(carta.nombre);
-        utterance.lang = "es-MX";
-        utterance.rate = 0.95;
-        utterance.pitch = 1;
-        utterance.volume = 1;
-        window.speechSynthesis.speak(utterance);
+        const audio = new Audio(carta.audio);
+        audioActual = audio;
+        audio.addEventListener("error", () => reproducirTonoDefault(), { once: true });
+        const promesa = audio.play();
+        if (promesa && typeof promesa.catch === "function") {
+            promesa.catch(() => reproducirTonoDefault());
+        }
     } catch (e) {
-        console.warn("No se pudo reproducir la voz:", e);
+        reproducirTonoDefault();
     }
+}
+
+// Reproduce un efecto (inicio/shuffle) y devuelve una promesa que se
+// resuelve cuando termina (o tras `fallbackMs` si no se puede reproducir).
+function reproducirEfecto(src, fallbackMs) {
+    return new Promise((resolve) => {
+        if (!settings.sonidoActivado) {
+            setTimeout(resolve, fallbackMs);
+            return;
+        }
+        try {
+            const audio = new Audio(src);
+            let terminado = false;
+            const finalizar = () => {
+                if (terminado) return;
+                terminado = true;
+                resolve();
+            };
+            audio.addEventListener("ended", finalizar, { once: true });
+            audio.addEventListener("error", () => setTimeout(finalizar, fallbackMs), { once: true });
+            setTimeout(finalizar, fallbackMs + 500); // salvavidas
+            const promesa = audio.play();
+            if (promesa && typeof promesa.catch === "function") {
+                promesa.catch(() => setTimeout(finalizar, fallbackMs));
+            }
+        } catch (e) {
+            setTimeout(resolve, fallbackMs);
+        }
+    });
 }
 
 // Ajustes (con persistencia en LocalStorage)
@@ -254,26 +312,35 @@ function togglePausa() {
 }
 
 // Eventos
-shuffleBtn.addEventListener("click", () => {
-    if (enCurso) return;
+shuffleBtn.addEventListener("click", async () => {
+    if (enCurso || shuffleBtn.disabled) return;
+    shuffleBtn.disabled = true;
+    startBtn.disabled = true;
+    statusEl.textContent = "Barajeando...";
+    await reproducirEfecto("sonidos/shuffle.mp3", 800);
     mazoBarajeado = barajear(MAZO);
     indiceActual = 0;
     vaciarHistorial();
     actualizarContador();
     renderDorso();
     statusEl.textContent = "Mazo barajeado. Listo para comenzar.";
+    shuffleBtn.disabled = false;
     startBtn.disabled = false;
 });
 
-startBtn.addEventListener("click", () => {
+startBtn.addEventListener("click", async () => {
     if (enCurso || mazoBarajeado.length === 0) return;
     enCurso = true;
     enPausa = false;
-    statusEl.textContent = "Repartiendo cartas...";
+    statusEl.textContent = "¡Empieza el juego!";
     startBtn.disabled = true;
     shuffleBtn.disabled = true;
-    pauseBtn.disabled = false;
+    pauseBtn.disabled = true;
     pauseBtn.textContent = "⏸ Pausar";
+    await reproducirEfecto("sonidos/inicio.mp3", 2000);
+    if (!enCurso) return; // pudo haberse reiniciado mientras sonaba
+    statusEl.textContent = "Repartiendo cartas...";
+    pauseBtn.disabled = false;
     mostrarSiguiente();
 });
 
