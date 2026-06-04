@@ -178,6 +178,30 @@
                     </div>
                 </div>
             </section>
+
+            <section class="bg-bau-white/80 backdrop-blur rounded-2xl p-4 sm:p-5 shadow-soft border border-bau-pink/20">
+                <h2 class="font-display text-bau-rose text-xl sm:text-2xl mb-3 flex items-center gap-3">
+                    <span class="h-px flex-1 bg-bau-pink/30"></span>
+                    Sonidos Alternativos
+                    <span class="h-px flex-1 bg-bau-pink/30"></span>
+                </h2>
+                <p class="text-xs sm:text-sm text-bau-brown/70 mb-3">
+                    Marca las cartas que tendrán un sonido alternativo al revelarse.
+                </p>
+                <div class="flex flex-wrap gap-2 mb-4">
+                    <button id="extraAllBtn" type="button"
+                        class="px-3 py-1.5 rounded-full text-xs sm:text-sm font-semibold bg-bau-pink text-white shadow-soft hover:bg-bau-pinkDark transition">
+                        ✓ Marcar todos
+                    </button>
+                    <button id="extraNoneBtn" type="button"
+                        class="px-3 py-1.5 rounded-full text-xs sm:text-sm font-semibold bg-bau-creamDark text-bau-brown border-2 border-bau-pink/40 shadow-soft hover:bg-bau-pinkSoft transition">
+                        ✗ Desmarcar todos
+                    </button>
+                </div>
+                <ul id="extraSoundsList"
+                    class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-x-3 gap-y-1.5 max-h-80 overflow-y-auto pr-1">
+                </ul>
+            </section>
         </main>
 
         <footer class="text-center mt-6 sm:mt-10 text-bau-brown/50 text-xs sm:text-sm flex flex-col items-center gap-2">
